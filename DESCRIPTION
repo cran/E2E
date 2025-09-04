@@ -1,7 +1,7 @@
 Package: E2E
 Title: Ensemble Learning Framework for Diagnostic and Prognostic
         Modeling
-Version: 0.0.3
+Version: 0.1.0
 Authors@R: person("Shanjie", "Luan", email = "Luan20050519@163.com", role = c("aut", "cre"))
 Description: Provides a framework to build and evaluate diagnosis or 
     prognosis models using stacking, voting, and bagging ensemble
@@ -27,8 +27,8 @@ LazyData: true
 VignetteBuilder: knitr
 Language: en
 NeedsCompilation: no
-Packaged: 2025-08-21 03:11:50 UTC; Lenovo
+Packaged: 2025-09-02 07:15:16 UTC; Lenovo
 Author: Shanjie Luan [aut, cre]
 Maintainer: Shanjie Luan <Luan20050519@163.com>
 Repository: CRAN
-Date/Publication: 2025-08-26 19:30:14 UTC
+Date/Publication: 2025-09-04 16:20:12 UTC

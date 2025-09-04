@@ -354,7 +354,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h2>2. Training Single Models with <code>models_pro</code></h2>
 <p>The <code>models_pro</code> function trains one or more standard
 survival models. For this demonstration, we’ll run a subset.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Run a subset of available prognostic models</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Run a subset of available prognostic models. If all, use model = &quot;all_pro&quot;.</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>results_all_pro <span class="ot">&lt;-</span> <span class="fu">models_pro</span>(train_pro, <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lasso_pro&quot;</span>, <span class="st">&quot;rsf_pro&quot;</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; Running model: lasso_pro</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Running model: rsf_pro</span></span>

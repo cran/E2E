@@ -17,7 +17,7 @@ doParallel::registerDoParallel(cl)
 initialize_modeling_system_dia()
 
 ## -----------------------------------------------------------------------------
-# To run all, use model = "all_dia" or omit the parameter.
+# To run all, use model = "all_dia".
 results_all_dia <- models_dia(train_dia, model = c("rf", "lasso", "xb"))
 
 # Print a summary for a specific model (e.g., Random Forest)
@@ -30,11 +30,7 @@ results_dia_custom <- models_dia(
   model = c("rf", "lasso", "xb"),
   tune = TRUE,
   seed = 123,
-  threshold_choices = list(rf = "f1", lasso = 0.6, xb = "youden"),
-  positive_label_value = 1,
-  negative_label_value = 0,
-  new_positive_label = "Case",
-  new_negative_label = "Control"
+  threshold_choices = list(rf = "f1", lasso = 0.6, xb = "youden")
 )
 
 # View the custom results
@@ -75,20 +71,13 @@ print_model_summary_dia("Imbalance (XGBoost)", results_imbalance_dia)
 bagging_pred_new <- apply_dia(
   trained_model_object = bagging_xb_results$model_object,
   new_data = test_dia,
-  label_col_name = "outcome",
-  pos_class = "Positive",
-  neg_class = "Negative"
+  label_col_name = "outcome"
 )
 
 # Evaluate these new predictions
-eval_results_new <- evaluate_model_dia(
-  precomputed_prob = bagging_pred_new$score,
-  y_data = factor(test_dia$outcome, levels = c(0, 1), labels = c("Positive", "Negative")),
-  sample_ids = test_dia$sample,
-  threshold_strategy = "default",
-  pos_class = "Positive",
-  neg_class = "Negative"
-)
+eval_results_new <- evaluate_predictions_dia(
+  prediction_df = bagging_pred_new,
+  threshold_choices = "f1")
 print(eval_results_new$evaluation_metrics)
 
 ## ----fig.width=5, fig.height=5, warning=FALSE---------------------------------
