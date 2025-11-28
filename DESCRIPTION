@@ -1,7 +1,7 @@
 Package: E2E
 Title: Ensemble Learning Framework for Diagnostic and Prognostic
         Modeling
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Shanjie", "Luan", email = "Luan20050519@163.com", role = c("aut", "cre"))
 Description: Provides a framework to build and evaluate diagnosis or 
     prognosis models using stacking, voting, and bagging ensemble
@@ -17,18 +17,19 @@ Encoding: UTF-8
 URL: https://xiaojie0519.github.io/E2E/
 BugReports: https://github.com/xiaojie0519/E2E/issues
 RoxygenNote: 7.3.2
-Imports: caret, dplyr, gbm, ggplot2, glmnet, magrittr, MASS, patchwork,
-        pROC, PRROC, randomForestSRC, readr, RSNNS, shapviz, survcomp,
-        survival, survivalROC, survminer, timeROC, xgboost
+Imports: caret, dplyr, tidyr, gbm, ggplot2, glmnet, magrittr, MASS,
+        patchwork, pROC, PRROC, randomForestSRC, readr, RSNNS, shapviz,
+        survcomp, survival, survivalROC, survminer, timeROC, xgboost,
+        plsRcox, cowplot,
 Suggests: ada, doParallel, e1071, kernlab, klaR, knitr, nnet,
-        randomForest, RColorBrewer, rmarkdown, rpart
+        randomForest, RColorBrewer, rmarkdown, rpart,
 Depends: R (>= 3.5)
 LazyData: true
 VignetteBuilder: knitr
 Language: en
 NeedsCompilation: no
-Packaged: 2025-09-02 07:15:16 UTC; Lenovo
+Packaged: 2025-11-28 14:26:55 UTC; Lenovo
 Author: Shanjie Luan [aut, cre]
 Maintainer: Shanjie Luan <Luan20050519@163.com>
 Repository: CRAN
-Date/Publication: 2025-09-04 16:20:12 UTC
+Date/Publication: 2025-11-28 15:20:02 UTC

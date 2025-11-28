@@ -349,7 +349,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>First, initialize the diagnostic modeling system. This registers all
 built-in classification models.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">initialize_modeling_system_dia</span>()</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; Diagnostic modeling system already initialized.</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; Diagnostic modeling system already initialized</span></span></code></pre></div>
 </div>
 <div id="training-single-models-with-models_dia" class="section level2">
 <h2>2. Training Single Models with <code>models_dia</code></h2>
@@ -373,7 +373,7 @@ this demonstration, we’ll run a subset to save time.</p>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="fu">print_model_summary_dia</span>(<span class="st">&quot;rf&quot;</span>, results_all_dia<span class="sc">$</span>rf)</span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; --- rf Model (on Training Data) Metrics ---</span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: default (0.5000)</span></span>
 <span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; AUROC: 1.0000 (95% CI: 1.0000 - 1.0000)</span></span>
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; Accuracy: 1.0000</span></span>
@@ -400,22 +400,20 @@ parameters.</p>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; AUC == 1 is always 1-1 and can be misleading.</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; Running model: lasso</span></span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Running model: xb</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; Warning in ci.auc.roc(roc_obj, conf.level = 0.95): ci.auc() of a ROC curve with</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; AUC == 1 is always 1-1 and can be misleading.</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co"># View the custom results</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="fu">print_model_summary_dia</span>(<span class="st">&quot;rf&quot;</span>, results_dia_custom<span class="sc">$</span>rf)</span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; --- rf Model (on Training Data) Metrics ---</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; AUROC: 1.0000 (95% CI: 1.0000 - 1.0000)</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; Accuracy: 1.0000</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; F1: 1.0000</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; Precision: 1.0000</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; Recall: 1.0000</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; Specificity: 1.0000</span></span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------</span></span></code></pre></div>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co"># View the custom results</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="fu">print_model_summary_dia</span>(<span class="st">&quot;rf&quot;</span>, results_dia_custom<span class="sc">$</span>rf)</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; --- rf Model (on Training Data) Metrics ---</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: f1 (0.6220)</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; AUROC: 1.0000 (95% CI: 1.0000 - 1.0000)</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; Accuracy: 1.0000</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; F1: 1.0000</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; Precision: 1.0000</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; Recall: 1.0000</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; Specificity: 1.0000</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------</span></span></code></pre></div>
 </div>
 </div>
 <div id="ensemble-modeling" class="section level2">
@@ -432,7 +430,7 @@ bootstrap samples.</p>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; --- Bagging (XGBoost) Model (on Training Data) Metrics ---</span></span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Ensemble Type: Bagging (Base: xb, Estimators: 5)</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: default (0.5000)</span></span>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; AUROC: 0.9995 (95% CI: 0.9989 - 1.0000)</span></span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; AUPRC: 0.9999</span></span>
 <span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; Accuracy: 0.9919</span></span>
@@ -458,7 +456,7 @@ bootstrap samples.</p>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; --- Voting (Soft) Model (on Training Data) Metrics ---</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; Ensemble Type: Voting (Type: soft, Weight Metric: AUROC, Base models used: rf, xb, lasso)</span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: f1 (0.6027)</span></span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; AUROC: 1.0000 (95% CI: 1.0000 - 1.0000)</span></span>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; Accuracy: 1.0000</span></span>
@@ -485,7 +483,7 @@ meta-model.</p>
 <span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; --- Stacking (Lasso) Model (on Training Data) Metrics ---</span></span>
 <span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; Ensemble Type: Stacking (Meta: lasso, Base models used: rf, xb, lasso)</span></span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: f1 (0.9794)</span></span>
 <span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; AUROC: 1.0000 (95% CI: 1.0000 - 1.0000)</span></span>
 <span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
 <span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; Accuracy: 1.0000</span></span>
@@ -506,7 +504,7 @@ meta-model.</p>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; --- Imbalance (XGBoost) Model (on Training Data) Metrics ---</span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; Ensemble Type: EasyEnsemble (Base: xb, Estimators: 5)</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: default (0.5000)</span></span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; AUROC: 0.9999 (95% CI: 0.9998 - 1.0000)</span></span>
 <span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; AUPRC: 1.0000</span></span>
 <span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; Accuracy: 0.9838</span></span>

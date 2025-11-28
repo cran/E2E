@@ -346,7 +346,7 @@ Customization</h1>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">initialize_modeling_system_dia</span>()</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; Diagnostic modeling system initialized and default models registered.</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">initialize_modeling_system_pro</span>()</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Prognosis modeling system initialized and default models registered.</span></span></code></pre></div>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Prognosis modeling system initialized.</span></span></code></pre></div>
 <div id="advanced-features" class="section level1">
 <h1>Advanced Features</h1>
 <p>This guide covers advanced topics such as extending the E2E framework
@@ -380,7 +380,7 @@ custom models. For example, to add Adaboost for diagnosis:</p>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="fu">print_model_summary_dia</span>(<span class="st">&quot;ab&quot;</span>, results_ab<span class="sc">$</span>ab)</span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; --- ab Model (on Training Data) Metrics ---</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; Threshold Strategy: default (0.5000)</span></span>
 <span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; AUROC: 0.9994 (95% CI: 0.9987 - 1.0000)</span></span>
 <span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; AUPRC: 0.9999</span></span>
 <span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; Accuracy: 0.9919</span></span>
@@ -389,6 +389,34 @@ custom models. For example, to add Adaboost for diagnosis:</p>
 <span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; Recall: 0.9974</span></span>
 <span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; Specificity: 0.9375</span></span>
 <span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------------</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># and also you can add coxboost as a prognosis model like</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&#39; @title Train CoxBoost</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#your_model_pro &lt;- function(X, y_surv, tune = FALSE) {</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#  if (!requireNamespace(&quot;CoxBoost&quot;, quietly = TRUE)) {</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#    stop(&quot;Package &#39;CoxBoost&#39; is required for this function but is not installed.</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#          Please install it from GitHub using: remotes::install_github(&#39;binderh/CoxBoost&#39;)&quot;)}</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#  X_matrix &lt;- as.matrix(X)</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#  stepno_val &lt;- 100</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#  if (tune) stepno_val &lt;- 100</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#  fit &lt;- CoxBoost::CoxBoost(time = y_surv[,1], status = y_surv[,2], x = X_matrix, stepno = stepno_val, penalty = 100)</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#  fit$fitted_scores &lt;- as.vector(predict(fit, newdata = X_matrix, type = &quot;lp&quot;))</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#  structure(</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#    list(finalModel = fit, X_train_cols = colnames(X), model_type = &quot;survival_coxboost&quot;),</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#    class = c(&quot;survival_coxboost&quot;, &quot;pro_model&quot;)</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#  )</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#}</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&#39; @export</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#predict_pro.survival_coxboost &lt;- function(object, newdata, ...) {</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#  if (!requireNamespace(&quot;CoxBoost&quot;, quietly = TRUE)) {</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#    stop(&quot;Package &#39;CoxBoost&#39; is needed for prediction.&quot;)</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#  }</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#  newdata &lt;- .ensure_features(object, newdata)</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#  X_matrix &lt;- as.matrix(newdata)</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#  as.vector(predict(object$finalModel, newdata = X_matrix, type = &quot;lp&quot;))</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#}</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#register_model_pro(&quot;cb_pro&quot;, cb_pro)</span></span></code></pre></div>
 </div>
 <div id="model-explanation-with-shap-figure_shap" class="section level2">
 <h2>2. Model Explanation with SHAP (<code>figure_shap</code>)</h2>
@@ -397,39 +425,38 @@ explanations by calculating SHAP values. This reveals which features had
 the most impact on the model’s output.</p>
 <div id="explaining-a-diagnostic-model" class="section level3">
 <h3>Explaining a Diagnostic Model</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># First, we need a model result object</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>bagging_xb_results <span class="ot">&lt;-</span> <span class="fu">bagging_dia</span>(train_dia, <span class="at">base_model_name =</span> <span class="st">&quot;xb&quot;</span>, <span class="at">n_estimators =</span> <span class="dv">10</span>, <span class="at">seed=</span><span class="dv">123</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; Running Bagging model: Bagging_dia (base: xb)</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Now, generate the SHAP explanation plot</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">figure_shap</span>(</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">data =</span> bagging_xb_results,</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">raw_data =</span> train_dia,</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">target_type =</span> <span class="st">&quot;diagnosis&quot;</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>)</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; Training &#39;xgboost&#39; surrogate model and calculating SHAP values...</span></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#plot(p6)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># First, we need a model result object</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>bagging_xb_results <span class="ot">&lt;-</span> <span class="fu">bagging_dia</span>(train_dia, <span class="at">base_model_name =</span> <span class="st">&quot;xb&quot;</span>, <span class="at">n_estimators =</span> <span class="dv">10</span>, <span class="at">seed=</span><span class="dv">123</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; Running Bagging model: Bagging_dia (base: xb)</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Now, generate the SHAP explanation plot</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">figure_shap</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">data =</span> bagging_xb_results,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">raw_data =</span> train_dia,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">target_type =</span> <span class="st">&quot;diagnosis&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Training &#39;xgboost&#39; surrogate model and calculating SHAP values...</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#plot(p6)</span></span></code></pre></div>
 </div>
 <div id="explaining-a-prognostic-model" class="section level3">
 <h3>Explaining a Prognostic Model</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># First, we need a model result object</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>stacking_stepcox_pro_results <span class="ot">&lt;-</span> <span class="fu">stacking_pro</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">results_all_models =</span> <span class="fu">models_pro</span>(train_pro, <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lasso_pro&quot;</span>, <span class="st">&quot;rsf_pro&quot;</span>)),</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">data =</span> train_pro,</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">meta_model_name =</span> <span class="st">&quot;stepcox_pro&quot;</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; Running model: lasso_pro</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; Running model: rsf_pro</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; Running Stacking model: Stacking_pro (meta: stepcox_pro)</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># Generate the SHAP explanation plot</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">figure_shap</span>(</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="at">data =</span> stacking_stepcox_pro_results,</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="at">raw_data =</span> train_pro,</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">target_type =</span> <span class="st">&quot;prognosis&quot;</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>)</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; Training &#39;xgboost&#39; surrogate model and calculating SHAP values...</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#plot(p7)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># First, we need a model result object</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>stacking_stepcox_pro_results <span class="ot">&lt;-</span> <span class="fu">stacking_pro</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">results_all_models =</span> <span class="fu">models_pro</span>(train_pro, <span class="at">model =</span> <span class="fu">c</span>(<span class="st">&quot;lasso_pro&quot;</span>, <span class="st">&quot;rsf_pro&quot;</span>)),</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">data =</span> train_pro,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">meta_model_name =</span> <span class="st">&quot;stepcox_pro&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; Running model: lasso_pro</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Running model: rsf_pro</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co"># Generate the SHAP explanation plot</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">figure_shap</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">data =</span> stacking_stepcox_pro_results,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">raw_data =</span> train_pro,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">target_type =</span> <span class="st">&quot;prognosis&quot;</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>)</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; Training &#39;xgboost&#39; surrogate model and calculating SHAP values...</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#plot(p7)</span></span></code></pre></div>
 </div>
 </div>
 </div>

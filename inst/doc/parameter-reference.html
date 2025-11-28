@@ -285,18 +285,74 @@ features (columns 4+)</li>
 <li><strong>gbm</strong>: Gradient Boosting Machine</li>
 </ul>
 </div>
-<div id="prognostic-models-6-algorithms" class="section level3">
-<h3>Prognostic Models (6 algorithms)</h3>
+<div id="prognostic-models-9-algorithms" class="section level3">
+<h3>Prognostic Models (9 algorithms)</h3>
 <ul>
 <li><strong>lasso_pro</strong>: Lasso Cox Regression</li>
 <li><strong>en_pro</strong>: Elastic Net Cox Regression<br />
 </li>
 <li><strong>ridge_pro</strong>: Ridge Cox Regression</li>
 <li><strong>stepcox_pro</strong>: Stepwise Cox Regression</li>
-<li><strong>gbm_pro</strong>: Gradient Boosting Machine</li>
+<li><strong>gbm_pro</strong>: Gradient Boosting Machine for Cox</li>
 <li><strong>rsf_pro</strong>: Random Survival Forest</li>
+<li><strong>xgb_pro</strong>: XGBoost for prognosis</li>
+<li><strong>pc_pro</strong>: Supervised Principal Components
+(SuperPC)</li>
+<li><strong>pls_pro</strong>: Partial Least Squares Cox Regression</li>
 </ul>
 </div>
+</div>
+</div>
+<div id="integrated-pipeline-functions" class="section level1">
+<h1>Integrated Pipeline Functions</h1>
+<div id="int_dia" class="section level2">
+<h2>int_dia()</h2>
+<p>Comprehensive diagnostic modeling pipeline executing single models,
+bagging, stacking, and voting ensembles.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><p><code>...</code> (required): Data frames for analysis. First =
+training dataset; subsequent = test datasets. Structure: column 1 =
+sample ID, column 2 = outcome (0/1), columns 3+ = features</p></li>
+<li><p><code>tune</code>: Logical (default TRUE). Enable hyperparameter
+tuning for base models</p></li>
+<li><p><code>n_estimators</code>: Integer (default 10). Number of
+bootstrap samples for bagging</p></li>
+<li><p><code>seed</code>: Integer (default 123). Random seed for
+reproducibility</p></li>
+</ul>
+</div>
+<div id="int_pro" class="section level2">
+<h2>int_pro()</h2>
+<p>Comprehensive prognostic modeling pipeline for survival analysis.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><p><code>...</code> (required): Data frames. First = training;
+others = test sets. Structure: column 1 = ID, column 2 = survival status
+(0/1), column 3 = survival time, columns 4+ = features</p></li>
+<li><p><code>tune</code>: Logical (default TRUE). Enable tuning</p></li>
+<li><p><code>n_estimators</code>: Integer (default 10). Bagging
+iterations</p></li>
+<li><p><code>seed</code>: Integer (default 123). Random seed</p></li>
+<li><p><code>time_unit</code>: String (default “day”). Time unit: “day”,
+“month”, or “year”</p></li>
+<li><p><code>years_to_evaluate</code>: Numeric vector (default
+c(1,3,5)). Years for time-dependent AUROC</p></li>
+</ul>
+</div>
+<div id="plot_integrated_results" class="section level2">
+<h2>plot_integrated_results()</h2>
+<p>Visualizes integrated modeling results with heatmap and summary
+plots.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><p><code>results_obj</code> (required): Output from
+<code>int_dia()</code>, <code>int_imbalance()</code>, or
+<code>int_pro()</code></p></li>
+<li><p><code>metric_name</code>: Character string (default “AUROC”).
+Metric name for plot labels (e.g., “AUROC”, “C-index”)</p></li>
+</ul>
+<p><strong>Returns:</strong> ggplot object (invisibly)</p>
 </div>
 </div>
 <div id="diagnostic-modeling-functions" class="section level1">
