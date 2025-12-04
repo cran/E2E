@@ -73,11 +73,11 @@ print_model_summary_dia("ab", results_ab$ab)
 
 ## ----fig.width=7, fig.height=6, warning=FALSE---------------------------------
 # First, we need a model result object
-bagging_xb_results <- bagging_dia(train_dia, base_model_name = "xb", n_estimators = 10, seed=123)
+bagging_rf_results <- bagging_dia(train_dia, base_model_name = "rf", n_estimators = 10)
 
 # Now, generate the SHAP explanation plot
 p6 <- figure_shap(
-  data = bagging_xb_results,
+  data = bagging_rf_results,
   raw_data = train_dia,
   target_type = "diagnosis"
 )

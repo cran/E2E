@@ -37,10 +37,10 @@ results_dia_custom <- models_dia(
 print_model_summary_dia("rf", results_dia_custom$rf)
 
 ## -----------------------------------------------------------------------------
-# Create a Bagging ensemble with XGBoost as the base model
+# Create a Bagging ensemble with RandomForest as the base model
 # n_estimators is reduced for faster execution in this example.
-bagging_xb_results <- bagging_dia(train_dia, base_model_name = "xb", n_estimators = 5)
-print_model_summary_dia("Bagging (XGBoost)", bagging_xb_results)
+bagging_rf_results <- bagging_dia(train_dia, base_model_name = "rf", tune_base_model = FALSE, n_estimators = 5)
+print_model_summary_dia("Bagging (RandomForest)", bagging_rf_results)
 
 ## -----------------------------------------------------------------------------
 # Create a soft voting ensemble from the top models
@@ -61,15 +61,15 @@ stacking_lasso_results <- stacking_dia(
 print_model_summary_dia("Stacking (Lasso)", stacking_lasso_results)
 
 ## -----------------------------------------------------------------------------
-# Create an EasyEnsemble with XGBoost as the base model
+# Create an EasyEnsemble with RandomForest as the base model
 # n_estimators is reduced for faster execution.
-results_imbalance_dia <- imbalance_dia(train_dia, base_model_name = "xb", n_estimators = 5, seed = 123)
-print_model_summary_dia("Imbalance (XGBoost)", results_imbalance_dia)
+results_imbalance_dia <- imbalance_dia(train_dia, base_model_name = "rf", n_estimators = 5)
+print_model_summary_dia("Imbalance (Random Forest)", results_imbalance_dia)
 
 ## -----------------------------------------------------------------------------
 # Apply the trained Bagging model to the test set
 bagging_pred_new <- apply_dia(
-  trained_model_object = bagging_xb_results$model_object,
+  trained_model_object = bagging_rf_results$model_object,
   new_data = test_dia,
   label_col_name = "outcome"
 )
@@ -78,7 +78,7 @@ bagging_pred_new <- apply_dia(
 eval_results_new <- evaluate_predictions_dia(
   prediction_df = bagging_pred_new,
   threshold_choices = "f1")
-print(eval_results_new$evaluation_metrics)
+print(eval_results_new)
 
 ## ----fig.width=5, fig.height=5, warning=FALSE---------------------------------
 # ROC Curve
